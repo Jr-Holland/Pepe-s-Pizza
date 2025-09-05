@@ -16,7 +16,7 @@ public class PizzaOrderFrame extends JFrame{
     public PizzaOrderFrame() {
         setTitle("Pizza Order App");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 500);
+        setSize(900, 500);
         pizzaApp = new CardLayout();
         pizzaPanel = new JPanel(pizzaApp);
         introPanel = new Intro();
