@@ -1,26 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class PizzaOrder {
-    private String name;
-    private String address;
-    private String phone;
+public class Pizza {
     private String size;
     private String style;
     private String sauce;
     private List<String> toppings = new ArrayList<>();
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
 
     public void setSize(String size) {
         this.size = size;
@@ -38,18 +23,6 @@ public class PizzaOrder {
         this.toppings = toppings;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
     public String getStyle() {
         return style;
     }
@@ -64,5 +37,25 @@ public class PizzaOrder {
 
     public List<String> getToppings() {
         return toppings;
+    }
+
+    @Override
+    public String toString() {
+        return size + " " + style + " with " + sauce + ", " + String.join(", ", toppings);
+    }
+
+    public String formatForReceipt() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(size).append(" ").append(style).append(" Pizza\n");
+        sb.append("Sauce: ").append(sauce).append("\n");
+        if (toppings.isEmpty()) {
+            sb.append("Toppings: None\n");
+        } else {
+            sb.append("Toppings:\n");
+            for (String t : toppings) {
+                sb.append("   - ").append(t).append("\n");
+            }
+        }
+        return sb.toString();
     }
 }

@@ -5,7 +5,8 @@ import java.util.ArrayList;
 public class PizzaOrderFrame extends JFrame{
     private CardLayout pizzaApp;
     private JPanel pizzaPanel;
-    private PizzaOrder pizzaOrder = new PizzaOrder();
+    private Pizza pizza;
+    private Order order = new Order();
     private Intro introPanel;
     private CustomerInfo customerPanel;
     private PizzaCustomizerInfo customizerPanel;
@@ -44,23 +45,24 @@ public class PizzaOrderFrame extends JFrame{
         );
 
         customerPanel.getSubmitButton().addActionListener(e -> {
-            pizzaOrder.setName(customerPanel.getCustomerNameText().getText());
-            pizzaOrder.setAddress(customerPanel.getCustomerAddressText().getText());
-            pizzaOrder.setPhone(customerPanel.getCustomerPhoneNumberText().getText());
+            order.setName(customerPanel.getCustomerNameText().getText());
+            order.setAddress(customerPanel.getCustomerAddressText().getText());
+            order.setPhone(customerPanel.getCustomerPhoneNumberText().getText());
+            pizza = new Pizza();
             pizzaApp.show(pizzaPanel, "Size");
         });
 
         sizePanel.getSmallPizzaButton().addActionListener(e -> {
-            pizzaOrder.setSize("Small");
+            pizza.setSize("Small");
         });
         sizePanel.getMediumPizzaButton().addActionListener(e -> {
-            pizzaOrder.setSize("Medium");
+            pizza.setSize("Medium");
         });
         sizePanel.getLargePizzaButton().addActionListener(e -> {
-            pizzaOrder.setSize("Large");
+            pizza.setSize("Large");
         });
         sizePanel.getXlargePizzaButton().addActionListener(e -> {
-            pizzaOrder.setSize("X-Large");
+            pizza.setSize("X-Large");
         });
         sizePanel.getMoveToStyleButton().addActionListener(e -> {
             pizzaApp.show(pizzaPanel, "Style");
@@ -70,16 +72,16 @@ public class PizzaOrderFrame extends JFrame{
         });
 
         stylePanel.getBrooklynPizzaButton().addActionListener(e -> {
-            pizzaOrder.setStyle("Brooklyn");
+            pizza.setStyle("Brooklyn");
         });
         stylePanel.getDeepDishPizzaButton().addActionListener(e -> {
-            pizzaOrder.setStyle("Deep Dish");
+            pizza.setStyle("Deep Dish");
         });
         stylePanel.getPersonalPanPizzaButton().addActionListener(e -> {
-            pizzaOrder.setStyle("Personal Pan");
+            pizza.setStyle("Personal Pan");
         });
         stylePanel.getHandTossedPizzaButton().addActionListener(e -> {
-            pizzaOrder.setStyle("Hand Tossed");
+            pizza.setStyle("Hand Tossed");
         });
         stylePanel.getMoveOnToCustomizerButton().addActionListener(e -> {
             pizzaApp.show(pizzaPanel, "Customizer");
@@ -89,19 +91,29 @@ public class PizzaOrderFrame extends JFrame{
         });
 
         customizerPanel.getMoveOnToTotalButton().addActionListener(e -> {
-            pizzaOrder.setSauce(customizerPanel.getSelectedSauce());
-            pizzaOrder.setToppings(customizerPanel.getSelectedToppings());
-            totalPanel.displayTotal(pizzaOrder);
+            pizza.setSauce(customizerPanel.getSelectedSauce());
+            pizza.setSize(sizePanel.getSelectedSize());
+            pizza.setStyle(stylePanel.getStyleSelection());
+            pizza.setToppings(customizerPanel.getSelectedToppings());
+            order.addPizza(pizza);
+            totalPanel.displayTotal(order);
             pizzaApp.show(pizzaPanel, "Total");
         });
+
         customizerPanel.getGoBackToStyleButton().addActionListener(e -> {
             pizzaApp.show(pizzaPanel, "Style");
         });
+
         customizerPanel.getResetCustomizerButton().addActionListener(e -> {
             customizerPanel.resetSelections();
-            pizzaOrder.setSauce("");
-            pizzaOrder.setToppings(new ArrayList<>());
+            pizza.setSauce("");
+            pizza.setToppings(new ArrayList<>());
             JOptionPane.showMessageDialog(this, "Selections have been reset.");
+        });
+
+        totalPanel.getAnotherOrderButton().addActionListener(e -> {
+            pizza = new Pizza();
+            pizzaApp.show(pizzaPanel, "Size");
         });
 
         totalPanel.getConfirmButton().addActionListener(e -> {

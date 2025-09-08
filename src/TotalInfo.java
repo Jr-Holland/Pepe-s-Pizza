@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.util.List;
 
 public class TotalInfo {
     private JPanel totalInfo;
@@ -9,6 +10,7 @@ public class TotalInfo {
     private JPanel confirmDenyButtonPanel;
     private JButton denyButton;
     private JButton confirmButton;
+    private JButton anotherOrderButton;
 
     public JPanel getTotalInfo() {
         return totalInfo;
@@ -22,25 +24,37 @@ public class TotalInfo {
         return confirmButton;
     }
 
-    public void displayTotal(PizzaOrder order) {
-        StringBuilder sb = new StringBuilder();
+    public JButton getAnotherOrderButton() {
+        return anotherOrderButton;
+    }
 
-        sb.append("Customer Info:\n");
-        sb.append("Name: ").append(order.getName()).append("\n");
+    public void displayTotal(Order order) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Customer: ").append(order.getName()).append("\n");
         sb.append("Address: ").append(order.getAddress()).append("\n");
         sb.append("Phone: ").append(order.getPhone()).append("\n\n");
 
-        sb.append("Pizza Order:\n");
-        sb.append("Size: ").append(order.getSize()).append("\n");
-        sb.append("Style: ").append(order.getStyle()).append("\n");
-        sb.append("Sauce: ").append(order.getSauce()).append("\n");
-
-        if (order.getToppings() != null && !order.getToppings().isEmpty()) {
-            sb.append("Toppings: ").append(String.join(", ", order.getToppings())).append("\n");
-        } else {
-            sb.append("Toppings: None\n");
+        int count = 1;
+        for (Pizza pizza : order.getPizzas()) {
+            sb.append("Pizza ").append(count++).append(": ")
+                    .append(pizza.toString()).append("\n");
         }
 
+        receiptArea.setText(sb.toString());
+    }
+
+    public void updateReceipt(String name, String phone, List<Pizza> pizzas) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Customer: ").append(name).append("\n");
+        sb.append("Phone: ").append(phone).append("\n\n");
+
+        int count = 1;
+        for (Pizza pizza : pizzas) {
+            sb.append("Pizza #").append(count++).append(":\n");
+            sb.append(pizza.formatForReceipt()).append("\n");
+        }
+
+        sb.append("Total Pizzas: ").append(pizzas.size()).append("\n");
         receiptArea.setText(sb.toString());
     }
 }

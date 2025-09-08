@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class SizeInfo {
     private JPanel sizeSelection;
@@ -12,6 +14,23 @@ public class SizeInfo {
     private JPanel forwardBackwardPanel;
     private JButton moveToStyleButton;
     private JButton goBackToCustomerButton;
+    private JButton sizeSelectedButton;
+
+    public SizeInfo() {
+        ActionListener sizeListener = e -> {
+            JButton clicked = (JButton) e.getSource();
+            if (sizeSelectedButton != null) {
+                sizeSelectedButton.setBackground(null);
+            }
+            clicked.setBackground(Color.GREEN);
+            sizeSelectedButton = clicked;
+        };
+
+        smallPizzaButton.addActionListener(sizeListener);
+        mediumPizzaButton.addActionListener(sizeListener);
+        largePizzaButton.addActionListener(sizeListener);
+        xlargePizzaButton.addActionListener(sizeListener);
+    }
 
     public JPanel getSizeSelection() {
         return sizeSelection;
@@ -39,5 +58,12 @@ public class SizeInfo {
 
     public JButton getMoveToStyleButton() {
         return moveToStyleButton;
+    }
+
+    public String getSelectedSize() {
+        if (sizeSelectedButton == null) {
+            return null;
+        }
+        return sizeSelectedButton.getText();
     }
 }
